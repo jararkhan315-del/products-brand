@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Us | Garderobe</title>
+
+  <!-- Fonts (similar vibe) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+ <!-- Font Awesome (Icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --text:#111;
+      --muted:#7d7d7d;
+      --border:#ececec;
+      --soft:#f6f6f6;
+      --dark:#0f0f16;
+      --accent:#e53935;
+
+       --gutter:58px;
+
+      --shadow-lg: 0 18px 45px rgba(0,0,0,.18);
+      --shadow-md: 0 14px 35px rgba(0,0,0,.12);
+
+      /* Overlap sizing (desktop default) */
+      --collection-photo-w: 300px;
+      --collection-left: 20px;
+      --collection-lift: 80px;  /* image upar kitna (your request) */
+      --collection-pad-left: 420px;
+
+      --testi-overlap: 110px;
+      --testi-pad: 56px;
+    }
+@media (max-width: 768px){
+      :root{ --gutter:14px; }
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:#fff;
+    }
+    .mono{ font-family:"Space Mono", monospace; }
+    .container{ max-width:var(--max);
+      margin:0 auto;
+      padding:0 var(--gutter);
+      width:100%;
+    } 
+
+    /* ====== TOP BAR ====== */
+    .topbar{
+      background:#0b0b10;
+      color:#fff;
+      font-size:12px;
+      padding:15px 0;
+    }
+    .topbar a{
+      color:#fff;
+      opacity:.9;
+      text-decoration:none;
+    }
+    .topbar a:hover{ opacity:1; }
+
+    /* ====== HEADER / NAV ====== */
+  .main-nav{
+      background:#fff;
+      border-bottom:1px solid var(--line);
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+    .nav-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:30px var(--gutter);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    /* Urdu Hint: Logo */
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:var(--text);
+      flex:0 0 auto;
+    }
+    .brand-bag{
+      width:34px;height:34px;
+      background:var(--dark);
+      color:#fff;
+      border-radius:3px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      position:relative;
+      font-size:18px;
+      line-height:1;
+    }
+    .brand-bag::before{
+      content:"";
+      position:absolute;
+      top:-6px;left:7px;right:7px;
+      height:7px;
+      border:2px solid var(--dark);
+      border-bottom:none;
+      border-radius:7px 7px 0 0;
+    }
+    .brand-text{ font-weight:800; font-size:26px; letter-spacing:.2px; }
+
+    /* Urdu Hint: Menu links + underline */
+    .menu{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:34px;
+      flex:1 1 auto;
+    }
+    .menu a{
+      position:relative;
+      text-decoration:none;
+      color:#666;
+      font-size:13px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+      padding:8px 0;
+      display:inline-block;
+      transition:.2s ease;
+    }
+    .menu a:hover{ color:var(--text); }
+    .menu a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:2px;
+      height:2px;
+      width:0;
+      background:var(--accent);
+      transition:width .25s ease;
+    }
+    .menu a:hover::after{ width:100%; }
+    .menu a.active{ color:var(--text); }
+    .menu a.active::after{ width:100%; }
+
+    /* Urdu Hint: Right icons */
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:22px;
+      flex:0 0 auto;
+    }
+    .nav-actions a{
+      color:#666;
+      font-size:18px;
+      text-decoration:none;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .nav-actions a:hover{ color:var(--accent); transform:translateY(-1px); }
+
+    @media (max-width: 992px){
+      .nav-inner{ flex-wrap:wrap; }
+      .menu{
+        order:3;
+        width:100%;
+        gap:18px;
+        flex-wrap:wrap;
+        justify-content:flex-start;
+      }
+    }
+
+
+    /* ====== HERO ====== */
+    .page-hero{
+      background: linear-gradient(#f7f7f7, #ffffff);
+      
+      text-align:center;
+      padding: 56px 0 40px;
+    }
+    .breadcrumb-mini{
+      color:var(--muted);
+      font-size:16px;
+      margin-bottom: 50px;
+      margin-top: 60px;
+    }
+    .page-title{
+      font-family:"Space Mono", monospace;
+      font-weight:700;
+      font-size:55px;
+      margin:0;
+      padding-bottom: 130px;
+    }
+
+    /* ====== SECTIONS ====== */
+    .section{ padding: 64px 0; }
+
+    /* ====== MEDIA BOX ====== */
+    .media-box{
+      background:#eee;
+      border:1px solid var(--border);
+      overflow:hidden;
+    }
+    .media-box img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    /* ====== DARK PANEL ====== */
+    .dark-panel{
+      background:var(--dark);
+      color:#fff;
+      position:relative;
+      overflow:hidden;
+    }
+    .dark-panel:before,
+    .dark-panel:after{
+      content:"";
+      position:absolute;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:999px;
+      width:320px; height:320px;
+      right:-140px; top:-120px;
+      pointer-events:none;
+    }
+    .dark-panel:after{
+      width:240px; height:240px;
+      right:-120px; top:80px;
+      opacity:.7;
+    }
+    .dark-panel p{ color: rgba(255,255,255,.72); }
+
+    /* ==========================================================
+       OVERLAP #1 (Shoes Collection)
+       ========================================================== */
+    .overlap-collection{
+      position: relative;
+      overflow: visible;
+    }
+
+    .collection-photo{
+      position:absolute;
+      left: var(--collection-left);
+      top: 50%;
+      transform: translateY(calc(-50% - var(--collection-lift)));
+      width: var(--collection-photo-w);
+      z-index: 3;
+      box-shadow: var(--shadow-lg);
+    }
+    .collection-photo .media-box{
+      border:0;
+      aspect-ratio: 1 / 1;
+    }
+
+    .collection-bar{
+      min-height: 230px;
+      padding: 56px 56px 56px var(--collection-pad-left);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ==========================================================
+       TEAM
+       ========================================================== */
+    .team-subtitle{
+      font-size:11px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      color:var(--muted);
+      text-align:center;
+      margin-bottom:10px;
+    }
+    .team-title{
+      font-family:"Space Mono", monospace;
+      font-weight:700;
+      text-align:center;
+      margin-bottom:28px;
+    }
+    .team-card{ text-align:center; border:0; background:transparent; }
+    .team-avatar img{
+      width:100%;
+      aspect-ratio: 1 / 1;
+      
+      
+      overflow:hidden;
+    }
+    .team-name{
+      font-family:"Space Mono", monospace;
+      font-weight:700;
+      margin:14px 0 2px;
+      font-size:13px;
+    }
+    .team-role{ color:var(--accent); font-size:11px; }
+
+    /* ==========================================================
+       OVERLAP #2 (Testimonials)
+       ========================================================== */
+    .testimonials-wrap{ overflow: visible; }
+
+    .testi-image{
+      aspect-ratio: 10 / 11;
+      border:0;
+      box-shadow: var(--shadow-md);
+    }
+
+    .testi-panel{
+      position:relative;
+      z-index:3;
+      margin-left: calc(-1 * var(--testi-overlap));
+      margin-top:40px;
+      margin-bottom:40px;
+      padding: var(--testi-pad);
+      min-height: 560px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .testi-author img{
+     
+     width: 70px;
+    height: 70px;
+      
+    }
+
+    /* ====== Trends ====== */
+    .soft-block{
+      background:#fafafa;
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+    }
+    .btn-accent{
+      background:var(--accent);
+      border-color:var(--accent);
+      color:#fff;
+      border-radius:0;
+      font-size:11px;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+      font-weight:800;
+      padding: .7rem 1rem;
+    }
+
+    /* ====== Newsletter ====== */
+    .newsletter{
+      background:#111;
+      color:#fff;
+      position:relative;
+      overflow:hidden;
+    }
+    .newsletter:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.78), rgba(0,0,0,.55)),
+        radial-gradient(900px 300px at 20% 0%, rgba(229,57,53,.25), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.65));
+      pointer-events:none;
+    }
+    .newsletter .box{
+      position:relative;
+      max-width: 860px;
+      margin: 0 auto;
+      text-align:center;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding: 44px 22px;
+    }
+    .newsletter h3{
+      font-family:"Space Mono", monospace;
+      font-weight:700;
+      margin:0 0 10px;
+    }
+    .newsletter p{
+      color: rgba(255,255,255,.75);
+      font-size:12.5px;
+      margin:0 0 22px;
+    }
+    .newsletter .form-control,
+    .newsletter .btn{ border-radius:0 !important; }
+
+    /* ====== Footer ====== */
+    .site-footer{
+      background:#fff;
+      border-top:1px solid var(--border);
+      padding-top: 34px;
+    }
+    .footer-title{
+      text-transform:uppercase;
+      letter-spacing:.9px;
+      font-size:17px;
+      font-weight:800;
+      margin-bottom:12px;
+    }
+    .site-footer a, .site-footer p{
+      font-size:15px;
+      color:#666;
+      text-decoration:none;
+    }
+    .site-footer a:hover{ color:#111; }
+
+    
+    .footer-brand{
+      text-align:center;
+      padding: 35px 0;
+      font-family:"Space Mono", monospace;
+      font-weight:900;
+      margin-top: 70px;
+       border-top:1px solid rgb(131, 125, 125);
+       
+    }
+    .copyright{
+      text-align:center;
+      border-top:1px solid rgb(134, 131, 131);
+      color:#888;
+      font-size:16px;
+      padding: 12px 0 26px;
+    }
+
+    /* ==========================================================
+       MEDIA QUERIES (HAR DEVICE)
+       Using Bootstrap-style breakpoints:
+       XXS <400, XS <576, SM 576-767, MD 768-991, LG 992-1199,
+       XL 1200-1399, XXL 1400+
+       ========================================================== */
+
+    /* XXL (1400px+) */
+    @media (min-width: 1400px){
+      :root{
+        --container: 1320px;
+        --collection-photo-w: 380px;
+        --collection-pad-left: 450px;
+        --testi-overlap: 120px;
+        --testi-pad: 60px;
+      }
+      .page-title{ font-size:56px; }
+      .section{ padding: 72px 0; }
+    }
+@media (max-width: 575.98px){
+  .section-collection{ padding-top: 10px; }
+}
+    /* XL (1200px - 1399px) */
+    @media (min-width: 1200px) and (max-width: 1399.98px){
+      :root{
+        --container: 1140px;
+        --collection-photo-w: 360px;
+        --collection-pad-left: 420px;
+        --testi-overlap: 110px;
+        --testi-pad: 56px;
+      }
+      .page-title{ font-size:52px; }
+    }
+
+    /* LG (992px - 1199px) */
+    @media (min-width: 992px) and (max-width: 1199.98px){
+      :root{
+        --container: 960px;
+        --collection-photo-w: 320px;
+        --collection-pad-left: 380px;
+        --collection-left: 16px;
+        --collection-lift: 70px;
+        --testi-overlap: 80px;
+        --testi-pad: 48px;
+      }
+      .page-title{ font-size:44px; }
+      .section{ padding: 56px 0; }
+      .collection-bar{ padding-top: 48px; padding-bottom: 48px; }
+    }
+
+    /* MD (768px - 991px) */
+    @media (min-width: 768px) and (max-width: 991.98px){
+      :root{ --container: 720px; }
+      .page-title{ font-size:40px; }
+      .section{ padding: 52px 0; }
+
+      /* Stack overlaps */
+      .collection-photo{
+        position: static;
+        transform:none;
+        width: 100%;
+        box-shadow:none;
+        margin-bottom:16px;
+      }
+      .collection-bar{
+        padding: 28px 20px;
+        box-shadow:none;
+      }
+
+      .testi-panel{
+        margin-left: 0;
+        margin-top: 16px;
+        margin-bottom: 0;
+        padding: 28px 20px;
+        box-shadow:none;
+      }
+    }
+
+    /* SM (576px - 767px) */
+    @media (min-width: 576px) and (max-width: 767.98px){
+      :root{ --container: 540px; }
+      .page-hero{ padding: 48px 0 30px; }
+      .page-title{ font-size:36px; }
+      .section{ padding: 46px 0; }
+
+      /* Stack overlaps */
+      .collection-photo{
+        position: static;
+        transform:none;
+        width: 100%;
+        box-shadow:none;
+        margin-bottom:14px;
+      }
+      .collection-bar{
+        padding: 26px 18px;
+        box-shadow:none;
+      }
+
+      .testi-panel{
+        margin-left: 0;
+        margin-top: 14px;
+        margin-bottom: 0;
+        padding: 26px 18px;
+        box-shadow:none;
+      }
+    }
+
+    /* XS (0px - 575px) */
+    @media (max-width: 575.98px){
+      .topbar .topbar-right{ display:none; }
+      .page-hero{ padding: 44px 0 28px; }
+      .page-title{ font-size:34px; }
+      .section{ padding: 42px 0; }
+
+      /* Stack overlaps */
+      .collection-photo{
+        position: static;
+        transform:none;
+        width: 100%;
+        box-shadow:none;
+        margin-bottom:12px;
+      }
+      .collection-bar{
+        padding: 24px 16px;
+        box-shadow:none;
+      }
+
+      .testi-panel{
+        margin-left: 0;
+        margin-top: 12px;
+        margin-bottom: 0;
+        padding: 24px 16px;
+        box-shadow:none;
+      }
+
+      .newsletter .box{ padding: 34px 16px; }
+    }
+
+    /* XXS (very small phones <400px) */
+    @media (max-width: 399.98px){
+      .page-title{ font-size:30px; }
+      .nav-link{ font-size:11px; }
+      .btn-accent{ padding:.65rem .9rem; }
+      .team-name{ font-size:12.5px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="container d-flex justify-content-between align-items-center gap-2">
+      <div>Don't miss our holiday sale - up to 50% OFF</div>
+      <div class="topbar-right d-flex gap-3 align-items-center">
+        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header / Navbar -->
+ <nav class="main-nav">
+    <div class="nav-inner">
+      <a class="brand" href="#">
+        <span class="brand-bag">G</span>
+        <span class="brand-text">arderobe</span>
+      </a>
+
+      <div class="menu">
+        <a href="index.html">Home</a>
+        <a href="product.html">Products</a>
+        <a href="service.html">Services</a>
+        <a class="active" href="about.html">About&nbsp;&nbsp;Us</a>
+        <a href="news.html">News</a>
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+        <a href="cart.html" aria-label="Cart"><i class="fa-solid fa-bag-shopping"></i></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb-mini">Home / About Us</div>
+      <h1 class="page-title">About Us</h1>
+    </div>
+  </section>
+
+  <main>
+    <!-- Shoes Collection (overlap like reference) -->
+    <section style="margin-bottom: 90px;" class="section">
+      <div class="container">
+        <div class="overlap-collection">
+          <!-- Overlapped image (EMPTY src) -->
+          <div class="collection-photo">
+            <div class="media-box">
+              <img src="./img/aboutshoes.webp" alt="Shoes collection">
+            </div>
+          </div>
+
+          <!-- Dark bar -->
+          <div class="dark-panel collection-bar">
+            <h2 class="mono fw-bold mb-3" style="font-size:22px;">Shoes Collection</h2>
+            <div class="row g-4">
+              <div class="col-md-6">
+                <p class="mb-0" style="font-size:12.5px;">
+                  Fusce at nisi eget dolor rhoncus facilisis. Mauris ante nisl, consectetur et luctus
+                  et, porta ut dolor. Curabitur ultricies ultrices nulla.
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p class="mb-0" style="font-size:12.5px;">
+                  Fusce at nisi eget dolor rhoncus facilisis. Mauris ante nisl, consectetur et luctus
+                  et, porta ut dolor. Curabitur ultricies ultrices nulla.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Team -->
+    <section style="margin-bottom: 100px;" class="section pt-0">
+      <div class="container">
+        <div class="team-subtitle">Ready to help you</div>
+        <h2 class="team-title">Our Team</h2>
+
+        <div class="row g-4">
+          <div class="col-6 col-lg-3">
+            <div class="team-card">
+              <div class="team-avatar"><img src="./img/man-1.webp" alt="Jerry Hill"></div>
+              <div class="team-name">Jerry Hill</div>
+              <div class="team-role">Designer</div>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg-3">
+            <div class="team-card">
+              <div class="team-avatar"><img src="./img/man-2.webp" alt="Roger Jones"></div>
+              <div class="team-name">Roger Jones</div>
+              <div class="team-role">Manager</div>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg-3">
+            <div class="team-card">
+              <div class="team-avatar"><img src="./img/man-4.webp" alt="Bianca Oliver"></div>
+              <div class="team-name">Bianca Oliver</div>
+              <div class="team-role">Consultant</div>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg-3">
+            <div class="team-card">
+              <div class="team-avatar"><img src="./img/man-3.webp" alt="Mike Miller"></div>
+              <div class="team-name">Mike Miller</div>
+              <div class="team-role">Stylist</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials (overlap like reference) -->
+    <section style="margin-bottom: 90px;" class="section pt-0">
+      <div class="container testimonials-wrap">
+        <div class="row g-0 align-items-stretch">
+          <div class="col-lg-7">
+            <div class="media-box testi-image">
+              <img src="./img/testimonials.webp" alt="Testimonials image">
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="dark-panel testi-panel d-flex flex-column justify-content-center">
+              <h3 class="mono fw-bold mb-3" style="font-size:29px;margin-top: -40px;margin-bottom: 40px;">Testimonials</h3>
+
+              <p style="font-size:16.5px; margin-bottom:38px;margin-top: 40px;">
+                Vitae ultricies leo integer malesuada euismod. Quis ipsum suspendisse ultrices gravida.
+                Dictum purus viverra accumsan in nisl.
+              </p>
+
+              <div class="d-flex align-items-center gap-3">
+                <div class="testi-author">
+                  <img src="./img/beauti girl.webp" alt="Jane Blayck">
+                </div>
+                <div>
+                  <div class="mono fw-bold" style="font-size:17px;">Jane Blayck</div>
+                  <div style="font-size:14px;color:rgba(255,255,255,.65);">Customer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trends -->
+    <section style="margin-bottom: 90px;" class="section soft-block">
+      <div class="container">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-5">
+            <h2 class="mono fw-bold mb-3" style="font-size:32px;">
+              Shop The 5 Biggest<br/>Shoe Trends
+            </h2>
+            <p class="text-secondary" style="font-size:16.5px; max-width:52ch;">
+              Mauris vitae ultricies leo integer malesuada. A odio tempor orci dapibus ultrices.
+              In egestas diam in arcu cursus euismod.
+            </p>
+            <a class="btn btn-accent" href="#">Shop Now</a>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="media-box" style="aspect-ratio: 16/7;">
+              <img src="./img/aboutshoes.webp" alt="Trends image">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section style="margin-bottom: 90px;" class="section newsletter">
+      <div class="container">
+        <div class="box">
+          <h3>Newsletter Updates</h3>
+          <p>Subscribe to receive emails on new product arrivals &amp; special offers</p>
+
+          <form id="newsletterForm">
+            <div class="input-group mx-auto" style="max-width:520px;">
+              <input class="form-control" type="email" name="email" placeholder="Email address" required>
+              <button class="btn btn-accent" type="submit" style="min-width:130px;">Subscribe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background-color: #f0ecec;" class="site-footer">
+    <div class="container">
+      <div style="padding-top: 90px;" class="row g-4">
+        <div class="col-lg-4">
+          <div>
+            <img style="width: 170px;margin-bottom: 30px;" src="./img/logo.svg" alt="">
+          </div>
+          <p>
+            Mauris vitae ultricies leo integer malesuada. Odio tempor orci dapibus ultrices in egestas
+            diam in arcu cursus euismod.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.
+          </p>
+        </div>
+
+        <div class="col-6 col-lg-2">
+          <div class="footer-title">Account</div>
+          <div class="d-grid gap-2">
+            <a href="#">My Account</a>
+            <a href="#">My Wishlist</a>
+            <a href="#">My Cart</a>
+            <a href="#">Sign in</a>
+            <a href="#">Check out</a>
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-2">
+          <div class="footer-title">Shipping</div>
+          <div class="d-grid gap-2">
+            <a href="#">New Products</a>
+            <a href="#">Best Sellers</a>
+            <a href="#">Manufacturers</a>
+            <a href="#">Suppliers</a>
+            <a href="#">Specials</a>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="footer-title">Contact us</div>
+          <div class="d-grid gap-2">
+            <a href="#">Phone: (+63) 555 1212</a>
+            <a href="#">Fax: (+63) 555 0100</a>
+            <a href="#">New York</a>
+            <a href="#">951 Street, NY 10129</a>
+          </div>
+        </div>
+      </div>
+
+     
+
+      <div class="footer-brand">
+        <span class="brand-mark">G</span>
+        <span class="brand-name">Garderobe</span>
+      </div>
+
+      <div class="copyright">
+        <a href="">Copyright © 2025 - WordPress Theme by CreativeThemes</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Demo submit (optional)
+    document.getElementById("newsletterForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      this.reset();
+    });
+  </script>
+</body>
+</html>

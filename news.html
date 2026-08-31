@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Garderobe - News</title>
+
+  <!-- Bootstrap 5 CSS (grid + responsive layout) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome (icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Fonts (Jost + Mono heading like original) -->
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --dark:#111116;
+      --text:#111116;
+      --muted:#777;
+      --line:#ececec;
+      --accent:#df453e;
+      --hero:#e9e9e9;
+
+      /* user requirement: left/right padding 58px */
+      --gutter:58px;
+
+      /* wide layout like original */
+      --max:1400px;
+    }
+
+    @media (max-width: 768px){
+      :root{ --gutter:14px; }
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:"Jost",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:#fff;
+      overflow-x:hidden;
+    }
+
+    /* page wrapper (58px padding) */
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 var(--gutter);
+      width:100%;
+    }
+
+    /* ===== Topbar ===== */
+    .topbar{
+      background:var(--dark);
+      color:#f4f4f6;
+      height:44px;
+      display:flex;
+      align-items:center;
+    }
+    .topbar .wrap{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .topbar-text{
+      font-size:14px;
+      line-height:1;
+      white-space:nowrap;
+    }
+    .topbar-text a{ color:#f4f4f6; text-decoration:underline; }
+    .topbar-text strong{ font-weight:800; }
+    .top-icons{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+    .top-icons a{
+      color:#f4f4f6;
+      font-size:14px;
+      text-decoration:none;
+      transition:.2s ease;
+    }
+    .top-icons a:hover{ opacity:.85; transform:translateY(-1px); }
+
+    /* ===== Navbar ===== */
+    .main-nav{
+      background:#fff;
+      border-bottom:1px solid var(--line);
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+    .nav-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:28px var(--gutter);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    /* logo */
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:var(--text);
+      flex:0 0 auto;
+    }
+    .brand-bag{
+      width:34px;height:34px;
+      background:var(--dark);
+      color:#fff;
+      border-radius:3px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      position:relative;
+      font-size:18px;
+      line-height:1;
+    }
+    .brand-bag::before{
+      content:"";
+      position:absolute;
+      top:-6px; left:7px; right:7px;
+      height:7px;
+      border:2px solid var(--dark);
+      border-bottom:none;
+      border-radius:7px 7px 0 0;
+    }
+    .brand-text{
+      font-weight:800;
+      font-size:26px;
+      letter-spacing:.2px;
+    }
+
+    /* center menu + underline hover (original style) */
+    .menu{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:34px;
+      flex:1 1 auto;
+    }
+    .menu a{
+      position:relative;
+      text-decoration:none;
+      color:#666;
+      font-size:13px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+      padding:8px 0;
+      display:inline-block;
+      transition:.2s ease;
+    }
+    .menu a:hover{ color:var(--text); }
+    .menu a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:2px;
+      height:2px;
+      width:0;
+      background:var(--accent);
+      transition:width .25s ease;
+    }
+    .menu a:hover::after{ width:100%; }
+    .menu a.active{ color:var(--text); }
+    .menu a.active::after{ width:100%; }
+
+    /* right icons */
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:22px;
+      flex:0 0 auto;
+    }
+    .nav-actions a{
+      color:#666;
+      font-size:18px;
+      text-decoration:none;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .nav-actions a:hover{ color:var(--accent); transform:translateY(-1px); }
+
+    @media (max-width: 992px){
+      .nav-inner{ flex-wrap:wrap; }
+      .menu{
+        order:3;
+        width:100%;
+        gap:18px;
+        flex-wrap:wrap;
+        justify-content:flex-start;
+      }
+    }
+
+    /* ===== Hero (News title) ===== */
+    .page-hero{
+      background:var(--hero);
+      padding:92px 0;
+      border-bottom:1px solid #eee;
+    }
+    .breadcrumb-mini{
+      text-align:center;
+      color:#666;
+      font-size:14px;
+      margin-bottom:22px;
+    }
+    .breadcrumb-mini a{ color:#666; text-decoration:none; }
+    .breadcrumb-mini a:hover{ text-decoration:underline; }
+    .breadcrumb-mini .sep{ margin:0 8px; color:#666; }
+    .page-title{
+      text-align:center;
+      font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+      font-weight:700;
+      margin:0;
+      letter-spacing:-1px;
+      font-size:clamp(46px,6vw,86px);
+      line-height:1.05;
+    }
+
+    /* ===== News Grid ===== */
+    .news-area{
+      padding:60px 0 70px;
+    }
+    .post-card{
+      margin-bottom:34px;
+    }
+    .post-media{
+      width:100%;
+      height:260px;
+      background:#f2f2f2;          /* blank image area background */
+      overflow:hidden;
+      border:1px solid #f0f0f0;
+    }
+    .post-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .post-title{
+      margin:18px 0 10px;
+      font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+      font-weight:700;
+      font-size:18px;
+      line-height:1.3;
+    }
+    .post-excerpt{
+      color:#777;
+      font-size:14px;
+      line-height:1.9;
+      margin:0 0 14px;
+    }
+    .post-meta{
+      font-size:11px;
+      letter-spacing:.7px;
+      text-transform:uppercase;
+      color:#999;
+    }
+
+    /* ===== Footer (simple like screenshot bottom area) ===== */
+    .site-footer{
+      border-top:1px solid #d1cbcb;
+      background-color: #f3eded;
+      padding:70px 0 0;
+    }
+    .footer-title{
+      font-weight:800;
+      font-size:16px;
+      margin-bottom:18px;
+    }
+    .footer-text{
+      color:#777;
+      font-size:14px;
+      line-height:1.8;
+    }
+    .footer-links{
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+    .footer-links li{ margin-bottom:10px; }
+    .footer-links a{
+      color:#777;
+      font-size:14px;
+      text-decoration:none;
+    }
+    .footer-links a:hover{ color:var(--accent); }
+
+    .footer-midlogo{
+      padding:55px 0 25px;
+      text-align:center;
+      border-top:1px solid #eee;
+      margin-top:55px;
+    }
+    .footer-logo{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:var(--text);
+    }
+    .footer-bag{
+      width:34px;height:34px;
+      background:var(--dark);
+      color:#fff;
+      border-radius:3px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      position:relative;
+      font-size:18px;
+      line-height:1;
+    }
+    .footer-bag::before{
+      content:"";
+      position:absolute;
+      top:-6px; left:7px; right:7px;
+      height:7px;
+      border:2px solid var(--dark);
+      border-bottom:none;
+      border-radius:7px 7px 0 0;
+    }
+    .footer-brand-text{
+      font-weight:800;
+      font-size:26px;
+      letter-spacing:.2px;
+    }
+    .footer-bottom{
+      padding:30px 0 60px;
+      text-align:center;
+      color:#999;
+      font-size:13px;
+      border-top:1px solid #c7c1c1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="wrap">
+      <div class="topbar-text">
+        Don't miss our <a href="#">holiday offer</a> - up to <strong>50% OFF!</strong>
+      </div>
+      <div class="top-icons">
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="Email"><i class="fa-regular fa-envelope"></i></a>
+        <a href="#" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navbar -->
+  <nav class="main-nav">
+    <div class="nav-inner">
+      <a class="brand" href="#">
+        <span class="brand-bag">G</span>
+        <span class="brand-text">arderobe</span>
+      </a>
+
+      <div class="menu" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="product.html">Products</a>
+        <a href="service.html">Services</a>
+        <a href="about.html">About&nbsp;Us</a>
+        <a class="active" href="news.html">News</a>
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+        <a href="#" aria-label="Cart"><i class="fa-regular fa-square"></i></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="breadcrumb-mini">
+        <a href="#">Home</a> <span class="sep">/</span>
+        <strong style="color:#111; font-weight:700;">News</strong>
+      </div>
+      <h1 class="page-title">News</h1>
+    </div>
+  </section>
+
+  <!-- News Grid -->
+  <section class="news-area">
+    <div class="wrap">
+      <div class="row g-4">
+
+        <!-- Post 1 -->
+        <div class="col-lg-4 col-md-6">
+          <article class="post-card">
+            <div class="post-media">
+              <!-- image tag blank -->
+              <img src="./img/news-1.webp" alt="">
+            </div>
+            <h3 class="post-title">Lobortis Elementum Nibhtellus Molestie Mauris</h3>
+            <p class="post-excerpt">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...
+            </p>
+            <div class="post-meta">IN LIFESTYLE / ON DECEMBER 24, 2021</div>
+          </article>
+        </div>
+
+        <!-- Post 2 -->
+        <div class="col-lg-4 col-md-6">
+          <article class="post-card">
+            <div class="post-media">
+              <img src="./img/news-2.webp" alt="">
+            </div>
+            <h3 class="post-title">Condimentum Odvenenatis Vestibulum Dapibus</h3>
+            <p class="post-excerpt">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...
+            </p>
+            <div class="post-meta">IN TRENDS / ON DECEMBER 24, 2021</div>
+          </article>
+        </div>
+
+        <!-- Post 3 -->
+        <div class="col-lg-4 col-md-6">
+          <article class="post-card">
+            <div class="post-media">
+              <img src="./img/news-3.webp" alt="">
+            </div>
+            <h3 class="post-title">Accumsan Tortor Posuere Acut Consequat</h3>
+            <p class="post-excerpt">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...
+            </p>
+            <div class="post-meta">IN LIFESTYLE / ON DECEMBER 24, 2021</div>
+          </article>
+        </div>
+
+        <!-- Post 4 -->
+        <div class="col-lg-4 col-md-6">
+          <article class="post-card">
+            <div class="post-media">
+              <img src="./img/news-5.webp" alt="">
+            </div>
+            <h3 class="post-title">Malesuada Bibendum Arcu Elementum Laoreet</h3>
+            <p class="post-excerpt">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...
+            </p>
+            <div class="post-meta">IN TRENDS / ON DECEMBER 17, 2021</div>
+          </article>
+        </div>
+
+        <!-- Post 5 -->
+        <div class="col-lg-4 col-md-6">
+          <article class="post-card">
+            <div class="post-media">
+              <img src="./img/news-6.webp" alt="">
+            </div>
+            <h3 class="post-title">Consequat Semper Viverra Nam Libero</h3>
+            <p class="post-excerpt">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...
+            </p>
+            <div class="post-meta">IN COLORS / ON DECEMBER 17, 2021</div>
+          </article>
+        </div>
+
+        <!-- Post 6 -->
+        <div class="col-lg-4 col-md-6">
+          <article class="post-card">
+            <div class="post-media">
+              <img src="./img/news-2.webp" alt="">
+            </div>
+            <h3 class="post-title">Tristique Senectus Etnetus Otmalessuada</h3>
+            <p class="post-excerpt">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...
+            </p>
+            <div class="post-meta">IN TRENDS / ON DECEMBER 14, 2021</div>
+          </article>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="footer-title">About Us</div>
+          <div class="footer-text">
+            Mauris vitae ultricies leo integer malesuada. Odio tempor orci dapibus ultrices in arcu cursus euismod.<br><br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="footer-title">Account</div>
+          <ul class="footer-links">
+            <li><a href="#">My Account</a></li>
+            <li><a href="#">My Wishlist</a></li>
+            <li><a href="#">My Cart</a></li>
+            <li><a href="#">Sign in</a></li>
+            <li><a href="#">Check out</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-3">
+          <div class="footer-title">Shipping</div>
+          <ul class="footer-links">
+            <li><a href="#">New Products</a></li>
+            <li><a href="#">Best Sellers</a></li>
+            <li><a href="#">Manufacturers</a></li>
+            <li><a href="#">Suppliers</a></li>
+            <li><a href="#">Specials</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-3">
+          <div class="footer-title">Contact Us</div>
+          <div class="footer-text">
+            Phone: (+63) 555 1212<br>
+            Fax: (+63) 555 0100<br><br>
+            New York,<br>96th Street, NY 10129
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-midlogo">
+        <a href="#" class="footer-logo">
+          <span class="footer-bag">G</span>
+          <span class="footer-brand-text">arderobe</span>
+        </a>
+      </div>
+
+      <div class="footer-bottom">
+        Copyright © 2025 - WordPress Theme by CreativeThemes
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

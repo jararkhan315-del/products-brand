@@ -1,0 +1,940 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Garderobe - Products</title>
+
+  <!-- Bootstrap CSS (Responsive grid/layout) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome (Icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Fonts (Original look) -->
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================
+      Urdu Hint: Root variables (colors/spacing)
+    ========================== */
+    :root{
+      --dark:#111116;
+      --text:#111116;
+      --muted:#666;
+      --line:#ececec;
+      --accent:#df453e;
+      --hero:#e9e9e9;
+
+      /* Urdu Hint: Product image box background (original jaisa) */
+      --media-bg:#f4f4f6;
+
+      /* Urdu Hint: Page left/right padding (original jaisa) */
+      --gutter:58px;
+
+      /* Urdu Hint: Page max width */
+      --max:1400px;
+    }
+
+    @media (max-width: 768px){
+      :root{ --gutter:14px; }
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family:"Jost",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:#fff;
+      overflow-x:hidden;
+    }
+
+    /* Urdu Hint: .wrap = page container (max-width + same padding) */
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 var(--gutter);
+      width:100%;
+    }
+
+    /* ========================= TOPBAR ========================= */
+    .topbar{
+      background:var(--dark);
+      color:#f4f4f6;
+      height:44px;
+      display:flex;
+      align-items:center;
+    }
+    .topbar .wrap{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+    }
+    .topbar-text{
+      font-size:14px;
+      white-space:nowrap;
+      line-height:1;
+    }
+    .topbar-text a{ color:#f4f4f6; text-decoration:underline; }
+    .topbar-text strong{ font-weight:800; }
+    .top-icons{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+    .top-icons a{
+      color:#f4f4f6;
+      font-size:14px;
+      text-decoration:none;
+      transition:.2s ease;
+    }
+    .top-icons a:hover{ opacity:.85; transform:translateY(-1px); }
+
+    /* ========================= NAVBAR ========================= */
+    .main-nav{
+      background:#fff;
+      border-bottom:1px solid var(--line);
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+    .nav-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:30px var(--gutter);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    /* Urdu Hint: Logo */
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:var(--text);
+      flex:0 0 auto;
+    }
+    .brand-bag{
+      width:34px;height:34px;
+      background:var(--dark);
+      color:#fff;
+      border-radius:3px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      position:relative;
+      font-size:18px;
+      line-height:1;
+    }
+    .brand-bag::before{
+      content:"";
+      position:absolute;
+      top:-6px;left:7px;right:7px;
+      height:7px;
+      border:2px solid var(--dark);
+      border-bottom:none;
+      border-radius:7px 7px 0 0;
+    }
+    .brand-text{ font-weight:800; font-size:26px; letter-spacing:.2px; }
+
+    /* Urdu Hint: Menu links + underline */
+    .menu{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:34px;
+      flex:1 1 auto;
+    }
+    .menu a{
+      position:relative;
+      text-decoration:none;
+      color:#666;
+      font-size:13px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+      padding:8px 0;
+      display:inline-block;
+      transition:.2s ease;
+    }
+    .menu a:hover{ color:var(--text); }
+    .menu a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:2px;
+      height:2px;
+      width:0;
+      background:var(--accent);
+      transition:width .25s ease;
+    }
+    .menu a:hover::after{ width:100%; }
+    .menu a.active{ color:var(--text); }
+    .menu a.active::after{ width:100%; }
+
+    /* Urdu Hint: Right icons */
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:22px;
+      flex:0 0 auto;
+    }
+    .nav-actions a{
+      color:#666;
+      font-size:18px;
+      text-decoration:none;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .nav-actions a:hover{ color:var(--accent); transform:translateY(-1px); }
+
+    @media (max-width: 992px){
+      .nav-inner{ flex-wrap:wrap; }
+      .menu{
+        order:3;
+        width:100%;
+        gap:18px;
+        flex-wrap:wrap;
+        justify-content:flex-start;
+      }
+    }
+
+    /* ========================= HERO ========================= */
+    .page-hero{
+      background:var(--hero);
+      padding:92px 0;
+    }
+    .breadcrumb-mini{
+      text-align:center;
+      color:#666;
+      font-size:14px;
+      margin-bottom:22px;
+    }
+    .breadcrumb-mini a{ color:#666; text-decoration:none; }
+    .breadcrumb-mini a:hover{ text-decoration:underline; }
+    .breadcrumb-mini .sep{ margin:0 8px; }
+    .page-title{
+      text-align:center;
+      font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+      font-weight:700;
+      letter-spacing:-1px;
+      margin:0;
+      font-size:clamp(46px,6vw,86px);
+      line-height:1.05;
+    }
+
+    /* ========================= SHOP AREA ========================= */
+    .shop-area{
+      padding:60px 0 90px;
+      background:#fff;
+    }
+    @media (min-width: 992px){
+      .shop-row{ --bs-gutter-x:44px; }
+    }
+
+    /* Toolbar */
+    .shop-toolbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:22px;
+    }
+    .shop-results{ font-size:14px; color:#777; }
+    .shop-sort{ width:260px; max-width:100%; }
+    .shop-sort .form-select{
+      border-radius:0;
+      border:1px solid #e6e6e6;
+      box-shadow:none !important;
+      padding:12px 14px;
+      font-size:14px;
+      color:#444;
+      background:#fff;
+    }
+    .shop-sort .form-select:focus{ border-color:var(--accent); }
+    @media (max-width: 575px){
+      .shop-toolbar{ flex-direction:column; align-items:flex-start; }
+      .shop-sort{ width:100%; }
+    }
+
+    /* Sidebar */
+    .sidebar-title{
+      font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+      font-size:24px;
+      font-weight:700;
+      margin:0 0 18px;
+      letter-spacing:-.4px;
+    }
+
+    /* Price Range UI */
+    .price-range-wrap{ margin-top:12px; }
+    .range-row{ position:relative; height:26px; margin:14px 0 10px; }
+    .range-track{
+      position:absolute; left:0; right:0;
+      top:50%; transform:translateY(-50%);
+      height:2px; background:#111; opacity:.6; border-radius:2px;
+    }
+    .range-row input[type="range"]{
+      position:absolute; left:0; right:0; width:100%;
+      pointer-events:none;
+      appearance:none;
+      height:2px;
+      background:transparent;
+      outline:none;
+    }
+    .range-row input[type="range"]::-webkit-slider-thumb{
+      pointer-events:all;
+      appearance:none;
+      width:12px;height:12px;border-radius:50%;
+      background:#fff;border:2px solid #111;
+      cursor:pointer;margin-top:-5px;
+    }
+    .price-inputs{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      margin-top:10px;
+    }
+    .price-mini{
+      width:92px;
+      border:1px solid #cfd6e4;
+      padding:8px 10px;
+      font-size:12px;
+      color:#444;
+      background:#fff;
+    }
+    .price-label{ display:block; font-size:11px; color:#999; margin-top:6px; }
+
+    /* Top rated list */
+    .rated-title{
+      font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+      font-size:24px;
+      font-weight:700;
+      margin:22px 0 14px;
+    }
+    .rated-item{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:10px 0;
+      border-bottom:1px solid #f0f0f0;
+    }
+    .rated-thumb{
+      width:69px;height:69px;
+      background:var(--media-bg);
+      border:1px solid #f0f0f0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      flex:0 0 auto;
+    }
+    .rated-thumb img{
+     max-width: 100px;
+      max-height: 100px;
+      object-fit:contain;
+    }
+    .rated-name{ font-size:13px;font-weight:600;margin:0;line-height:1.2;color:#222;text-decoration: none; }
+    .rated-name:hover{
+      color: #c43131;
+    }
+    .stars{ color:#f39c12;font-size:11px;line-height:1;margin:4px 0 3px; }
+    .rated-price{ font-size:12px;color:#555;margin:0; }
+    .rated-price del{ color:#aaa;margin-left:6px; }
+
+    /* Promo card */
+    .promo-card{
+      margin-top:22px;
+      background:#0f0f14;
+      color:#fff;
+      padding:38px 32px;
+      position:relative;
+      overflow:hidden;
+      min-height:520px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .promo-card::before,
+    .promo-card::after{
+      content:"";
+      position:absolute;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:50%;
+      pointer-events:none;
+    }
+    .promo-card::before{ width:560px;height:560px; right:-260px; bottom:-280px; }
+    .promo-card::after{ width:240px;height:240px; right:-90px; top:-120px; }
+    .promo-title{
+      font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+      font-size:22px;
+      font-weight:700;
+      margin:0 0 16px;
+      line-height:1.35;
+    }
+    .promo-text{
+      font-size:13px;
+      color:rgba(255,255,255,0.72);
+      line-height:1.9;
+      margin:0;
+      max-width:260px;
+    }
+    .promo-sign{ font-family:"Great Vibes",cursive; font-size:44px; line-height:1; margin-top:24px; }
+    .promo-role{
+      font-size:11px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      opacity:.85;
+      font-weight:700;
+      margin-top:8px;
+    }
+
+    /* Product cards */
+    
+
+    .product-media{
+      background:var(--media-bg);
+      height:285px;
+      border:1px solid #f0f0f0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* Urdu Hint: zoom effect CSS-only (no JS) */
+    .product-media img{
+      max-width:400px;
+      max-height:400px;
+      object-fit:contain;
+      transition:transform .25s ease;
+      transform:scale(1);
+      mix-blend-mode:multiply;
+    }
+    .product-media:hover img{
+      transform:scale(1.07); /* Urdu Hint: hover zoom intensity */
+    }
+
+    .sale-badge{
+      position:absolute;
+      top:14px; left:14px;
+      background:var(--accent);
+      color:#fff;
+      font-size:10px;
+      font-weight:700;
+      padding:4px 9px;
+      text-transform:uppercase;
+      border-radius:2px;
+      z-index:2;
+    }
+
+    .product-body{ padding-top:16px; }
+    .p-title{
+      font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+      font-size:14px;
+      font-weight:700;
+      margin:0 0 8px;
+      text-decoration: none;
+      color:#222;
+    }
+    .p-title:hover{
+      color: #c43131;
+    }
+    .p-price{ font-size:13px;color:#222;margin:0 0 8px; }
+    .p-price del{ color:#aaa;margin-left:6px;font-size:12px; }
+    .p-cat{ font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#999;margin-top:2px; }
+
+    .add-btn{
+      margin-top:14px;
+      background:var(--accent);
+      border:none;
+      color:#fff;
+      padding:12px 18px;
+      font-size:12px;
+      font-weight:700;
+      text-transform:uppercase;
+      border-radius:0;
+    }
+    .add-btn:hover{ background:#c43131; }
+
+    /* Footer */
+    .site-footer{
+      background:#fff;
+      border-top:1px solid #f0f0f0;
+      padding:80px 0 0;
+    }
+    .footer-title{ font-weight:700; font-size:16px; margin-bottom:18px; }
+    .footer-text{ color:#777; font-size:14px; line-height:1.8; }
+    .footer-links{ list-style:none; padding:0; margin:0; }
+    .footer-links li{ margin-bottom:10px; }
+    .footer-links a{ color:#777; font-size:14px; text-decoration:none; }
+    .footer-links a:hover{ color:var(--accent); }
+
+    .footer-bottom{
+      margin-top:60px;
+      padding:35px 0 60px;
+      border-top:1px solid #eee;
+      text-align:center;
+      color:#999;
+      font-size:13px;
+    }
+    .footer-logo{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:var(--text);
+      margin-bottom:14px;
+    }
+    .footer-bag{
+      width:34px;height:34px;
+      background:var(--dark);
+      color:#fff;
+      border-radius:3px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      position:relative;
+      font-size:18px;
+      line-height:1;
+    }
+    .footer-bag::before{
+      content:"";
+      position:absolute;
+      top:-6px; left:7px; right:7px;
+      height:7px;
+      border:2px solid var(--dark);
+      border-bottom:none;
+      border-radius:7px 7px 0 0;
+    }
+    .footer-brand-text{ font-weight:800; font-size:24px; letter-spacing:.2px; }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="wrap">
+      <div class="topbar-text">
+        Don't miss our <a href="#">holiday offer</a> - up to <strong>50% OFF!</strong>
+      </div>
+      <div class="top-icons">
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="Email"><i class="fa-regular fa-envelope"></i></a>
+        <a href="#" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVBAR -->
+  <nav class="main-nav">
+    <div class="nav-inner">
+      <a class="brand" href="#">
+        <span class="brand-bag">G</span>
+        <span class="brand-text">arderobe</span>
+      </a>
+
+      <div class="menu">
+        <a href="index.html">Home</a>
+        <a class="active" href="#">Products</a>
+        <a href="service.html">Services</a>
+        <a href="about.html">About&nbsp;&nbsp;Us</a>
+        <a href="news.html">News</a>
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+        <a href="cart.html" aria-label="Cart"><i class="fa-solid fa-bag-shopping"></i></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="breadcrumb-mini">
+        <a href="index.html">Home</a> <span class="sep">/</span>
+        <strong style="color:#111116;font-weight:700;">Products</strong>
+      </div>
+      <h1 class="page-title">Products</h1>
+    </div>
+  </section>
+
+  <!-- SHOP AREA -->
+  <section class="shop-area">
+    <div class="wrap">
+      <div class="row shop-row">
+
+        <!-- SIDEBAR -->
+        <aside class="col-lg-3 mb-5 mb-lg-0">
+          <h3 class="sidebar-title">Filter by price</h3>
+
+          <div class="price-range-wrap">
+            <div class="range-row">
+              <div class="range-track"></div>
+              <input id="minRange" type="range" min="27" max="60" value="25" step="1">
+              <input id="maxRange" type="range" min="27" max="60" value="60" step="1">
+            </div>
+
+            <div class="price-inputs">
+              <div>
+                <input id="minBox" class="price-mini" type="text" value="$25" readonly>
+                <span class="price-label">Min. Price</span>
+              </div>
+              <div class="text-end">
+                <input id="maxBox" class="price-mini" type="text" value="$60" readonly>
+                <span class="price-label">Max. Price</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="rated-title">Top rated products</div>
+
+          <!-- Urdu Hint: Images tags khali (aap khud lagao) -->
+          <div class="rated-item">
+            <div class="rated-thumb"><a href="watch.html"><img src="./img/clock.webp" alt=""></a></div>
+            <div>
+              <a class="rated-name" href="watch.html">Quartz Watch</a>
+              <div class="stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+              </div>
+              <p class="rated-price">$50.00 <del>$80.00</del></p>
+            </div>
+          </div>
+
+          <div class="rated-item">
+            <div class="rated-thumb"><a href="shirt.html"><img src="./img/t-shirt.webp" alt=""></a></div>
+            <div>
+              <a class="rated-name" href="shirt.html">Black T-shirt</a>
+              <div class="stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+              <p class="rated-price">$50.00 <del>$80.00</del></p>
+            </div>
+          </div>
+
+          <div class="rated-item">
+            <div class="rated-thumb"><a href="shoes.html"><img src="./img/shose.webp" alt=""></a></div>
+            <div>
+              <a class="rated-name" href="shoes.html">Color Sneakers</a>
+              <div class="stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+              </div>
+              <p class="rated-price">$50.00 <del>$80.00</del></p>
+            </div>
+          </div>
+
+          <div class="rated-item">
+            <div class="rated-thumb"><a href="cap.html"><img src="./img/cap.webp" alt=""></a></div>
+            <div>
+             <a class="rated-name" href="cap.html">Snapback Cap</a>
+              <div class="stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+              </div>
+              <p class="rated-price">$30.00 <del>$45.00</del></p>
+            </div>
+          </div>
+
+          <div class="rated-item" style="border-bottom:none;">
+            <div class="rated-thumb"><a href="shoes.html"><img src="./img/shose.webp" alt=""></a></div>
+            <div>
+             <a class="rated-name" href="shoes.html">Gray Shoes</a>
+              <div class="stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+              </div>
+              <p class="rated-price">$50.00</p>
+            </div>
+          </div>
+
+          <div class="promo-card">
+            <div>
+              <div class="promo-title">New Cloth<br>Technologies</div>
+              <p class="promo-text">
+                Mauris vitae ultricies leo integer malesuada.
+                Odio tempor orci dapibus ultrices in.<br><br>
+                Egestas diam in arcu cursus euismod.
+                Dictum purus viverra accumsan in nisl.
+              </p>
+            </div>
+            <div>
+              <div class="promo-sign">Alice W</div>
+              <div class="promo-role">Alice Autumn, CEO</div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- PRODUCTS GRID -->
+        <div class="col-lg-9">
+
+          <div class="shop-toolbar">
+            <div class="shop-results">Showing 1–9 of 12 results</div>
+            <div class="shop-sort">
+              <select class="form-select" id="sortSelect">
+                <option selected>Default sorting</option>
+                <option>Sort by popularity</option>
+                <option>Sort by average rating</option>
+                <option>Sort by latest</option>
+                <option>Sort by price: low to high</option>
+                <option>Sort by price: high to low</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row g-4">
+
+            <!-- Product 1 -->
+            <div class="col-md-6 col-lg-4">
+              <div class="product-card">
+                <div class="product-media">
+                  <span class="sale-badge">Sale</span>
+                 <a href="shirt.html"><img src="./img/t-shirt.webp" alt=""></a>
+                </div>
+                <div class="product-body">
+                  <div><a class="p-title" href="shirt.html">Black T-shirt</a></div>
+                  <div class="p-price">$50.00 <del>$80.00</del></div>
+                  <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
+                  <div class="p-cat">T-shirts</div>
+                  <button class="add-btn" type="button">Add to cart</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="col-md-6 col-lg-4">
+              <div class="product-card">
+                <div class="product-media">
+                 <a href=""> <img src="./img/cap.webp" alt=""></a>
+                </div>
+                <div class="product-body">
+                  <div><a class="p-title" href="cap.html">Brown Cap</a></div>
+                  <div class="p-price">$25.00</div>
+                  <div class="p-cat">Accessories</div>
+                  <button class="add-btn" type="button">Add to cart</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="col-md-6 col-lg-4">
+              <div class="product-card">
+                <div class="product-media">
+                  <span class="sale-badge">Sale</span>
+                  <a href=""><img src="./img/shose.webp" alt=""></a>
+                </div>
+                <div class="product-body">
+                  <div><a class="p-title" href="shoes.html">Color Sneakers</a></div>
+                  <div class="p-price">$50.00 <del>$80.00</del></div>
+                  <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
+                  <div class="p-cat">Sneakers</div>
+                  <button class="add-btn" type="button">Add to cart</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="col-md-6 col-lg-4">
+              <div class="product-card">
+                <div class="product-media">
+                  <a href=""><img src="./img/bag.webp" alt=""></a>
+                </div>
+                <div class="product-body">
+                  <div><a class="p-title" href="bag.html">Elegant Bag</a></div>
+                  <div class="p-price">$50.00</div>
+                  <div class="p-cat">Jackets</div>
+                  <button class="add-btn" type="button">Add to cart</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="col-md-6 col-lg-4">
+              <div class="product-card">
+                <div class="product-media">
+                  <a href=""><img src="./img/shose.webp" alt=""></a>
+                </div>
+                <div class="product-body">
+                  <div><a class="p-title" href="shoes.html">Gray Shoes</a></div>
+                  <div class="p-price">$50.00</div>
+                  <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+                  <div class="p-cat">Sneakers</div>
+                  <button class="add-btn" type="button">Add to cart</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="col-md-6 col-lg-4">
+              <div class="product-card">
+                <div class="product-media">
+                  <span class="sale-badge">Sale</span>
+                  <a href=""><img src="./img/clock.webp" alt=""></a>
+                </div>
+                <div class="product-body">
+                  <div><a class="p-title" href="watch.html">Quartz Watch</a></div>
+                  <div class="p-price">$50.00 <del>$80.00</del></div>
+                  <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
+                  <div class="p-cat">Accessories</div>
+                  <button class="add-btn" type="button">Add to cart</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 7 -->
+            <div class="col-md-6 col-lg-4">
+              <div class="product-card">
+                <div class="product-media">
+                  <span class="sale-badge">Sale</span>
+                 <a href=""><img src="./img/glasses.webp" alt=""></a>
+                </div>
+                <div class="product-body">
+                  <div><a class="p-title" href="glasses.html">Retro Sunglasses</a></div>
+                  <div class="p-price">$55.00 <del>$60.00</del></div>
+                  <div class="p-cat">Accessories</div>
+                  <button class="add-btn" type="button">Add to cart</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 8 -->
+            <div class="col-md-6 col-lg-4">
+              <div class="product-card">
+                <div class="product-media">
+                  <span class="sale-badge">Sale</span>
+                  <a href=""><img src="./img/cap.webp" alt=""></a>
+                </div>
+                <div class="product-body">
+                  <div><a class="p-title" href="">Snapback Cap</a></div>
+                  <div class="p-price">$30.00 <del>$45.00</del></div>
+                  <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></div>
+                  <div class="p-cat">Accessories</div>
+                  <button class="add-btn" type="button">Add to cart</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 9 -->
+            <div class="col-md-6 col-lg-4">
+              <div class="product-card">
+                <div class="product-media">
+                  <span class="sale-badge">Sale</span>
+                  <a href=""><img src="./img/shose.webp" alt=""></a>
+                </div>
+                <div class="product-body">
+                  <div><a class="p-title" href="">Stonewall Sneakers</a></div>
+                  <div class="p-price">$60.00 <del>$70.00</del></div>
+                  <div class="p-cat">Sneakers</div>
+                  <button class="add-btn" type="button">Add to cart</button>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- row -->
+        </div><!-- col -->
+      </div><!-- row -->
+    </div><!-- wrap -->
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="footer-title">About Us</div>
+          <div class="footer-text">
+            Mauris vitae ultricies leo integer malesuada.<br>
+            Odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod.<br><br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="footer-title">Account</div>
+          <ul class="footer-links">
+            <li><a href="#">My Account</a></li>
+            <li><a href="#">My Wishlist</a></li>
+            <li><a href="#">My Cart</a></li>
+            <li><a href="#">Sign in</a></li>
+            <li><a href="#">Check out</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-3">
+          <div class="footer-title">Shipping</div>
+          <ul class="footer-links">
+            <li><a href="#">New Products</a></li>
+            <li><a href="#">Best Sellers</a></li>
+            <li><a href="#">Manufacturers</a></li>
+            <li><a href="#">Suppliers</a></li>
+            <li><a href="#">Specials</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-3">
+          <div class="footer-title">Contact Us</div>
+          <div class="footer-text">
+            Phone: (+63) 555 1212<br>
+            Fax: (+63) 555 0100<br><br>
+            New York,<br>
+            96th Street, NY 10129
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <a href="#" class="footer-logo">
+          <span class="footer-bag">G</span>
+          <span class="footer-brand-text">arderobe</span>
+        </a>
+        <div>Copyright © 2026 - WordPress Theme by CreativeThemes</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    /* =========================
+      Urdu Hint: Price filter JS
+      - min/max range values boxes update
+    ========================== */
+    const minRange = document.getElementById('minRange');
+    const maxRange = document.getElementById('maxRange');
+    const minBox = document.getElementById('minBox');
+    const maxBox = document.getElementById('maxBox');
+
+    function syncPrice(){
+      let minV = parseInt(minRange.value, 10);
+      let maxV = parseInt(maxRange.value, 10);
+      if (minV > maxV) [minV, maxV] = [maxV, minV];
+      minBox.value = `$${minV}`;
+      maxBox.value = `$${maxV}`;
+    }
+
+    minRange.addEventListener('input', syncPrice);
+    maxRange.addEventListener('input', syncPrice);
+    syncPrice();
+
+    /* Urdu Hint: Sorting dropdown (UI only) */
+    const sortSelect = document.getElementById('sortSelect');
+    if(sortSelect){
+      sortSelect.addEventListener('change', ()=> console.log(sortSelect.value));
+    }
+  </script>
+</body>
+</html>

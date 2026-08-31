@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garderobe - Fashion Store</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome for Icons (Icons ke liye use hota hai) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts (Website ke fonts ke liye) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Playfair+Display:wght@500;700;800&family=Great+Vibes&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* CSS Variables: Colors set karne ke liye takay bar bar na likhna paray */
+        :root {
+            --primary-red: #df453e;
+            --dark-bg: #1c1c21;
+            --light-gray: #e5e5e5;
+            --product-bg: #f4f4f4;
+            --text-color: #333;
+            --text-muted: #888;
+          --accent:#df453e;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* Container Adjustment: Aapne jo 45px aur 50px padding mangi thi */
+        .container {
+            max-width: 1400px;
+            padding-left: 45px !important;
+            padding-right: 50px !important;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================================
+           SEARCH OVERLAY CSS (Naya Search Bar Design)
+           ========================================= */
+        /* Yeh poori screen ko dark kar deta hai jab search icon par click hota hai */
+        .search-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(28, 28, 33, 0.98);
+            /* Original dark color */
+            z-index: 10000;
+            /* Takay sabse upar nazar aaye */
+            display: none;
+            /* Shuru mein chupa rahega */
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Search input aur button ka gher (container) */
+        .search-inner {
+            width: 80%;
+            max-width: 800px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            /* Niche wali patli line */
+            position: relative;
+        }
+
+        /* Likkhne wali jagah ka style */
+        .search-overlay input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 40px;
+            /* Bara font size screenshot ki tarah */
+            width: 100%;
+            padding: 15px 0;
+            outline: none;
+        }
+
+        /* Laal wala gol button */
+        .search-btn-circle {
+            background-color: var(--primary-red);
+            color: #fff;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        /* Search band karne ka (X) button */
+        .close-search {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            color: #fff;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* =========================================
+           LOGIN POPUP (Original website jaisa center modal)
+           ========================================= */
+        /* Urdu Hint: Yeh overlay grey background banata hai (poori screen black nahi) */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            /* grey dim jaisa screenshot */
+            z-index: 9999;
+            /* search se neeche, navbar se upar */
+            display: none;
+            /* start hidden */
+        }
+
+        /* Urdu Hint: Ye white box center mein show hota hai */
+        .login-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(520px, 92vw);
+            background: #fff;
+            padding: 55px 55px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            border-radius: 2px;
+            z-index: 10000;
+            /* overlay se upar */
+            display: none;
+            /* start hidden */
+        }
+
+        /* Urdu Hint: Screenshot ki tarah top-right corner per X (screen per) */
+        .login-close {
+            position: fixed;
+            top: 22px;
+            right: 28px;
+            z-index: 10001;
+            color: #fff;
+            font-size: 26px;
+            line-height: 1;
+            cursor: pointer;
+            display: none;
+            user-select: none;
+        }
+
+        /* Urdu Hint: Login form labels/input styling original jaisi */
+        .login-modal label {
+            display: block;
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .login-modal .login-input {
+            width: 100%;
+            border: 1px solid #dfe3ee;
+            padding: 14px 14px;
+            border-radius: 2px;
+            outline: none;
+            font-size: 14px;
+            background: #fff;
+        }
+
+        .login-modal .login-input:focus {
+            border-color: var(--primary-red);
+        }
+
+        /* Urdu Hint: Password field ke andar eye icon set karne ke liye wrapper */
+        .login-pass-wrap {
+            position: relative;
+        }
+
+        .login-eye {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .login-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 18px;
+            margin-bottom: 22px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .login-row a {
+            color: #777;
+        }
+
+        .login-row a:hover {
+            color: var(--primary-red);
+        }
+
+        /* Urdu Hint: Red button original jaisa */
+        .login-btn {
+            width: 100%;
+            border: none;
+            background: var(--primary-red);
+            color: #fff;
+            padding: 14px 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: 0;
+        }
+
+        .login-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Mobile spacing for modal */
+        @media (max-width: 575px) {
+            .login-modal {
+                padding: 35px 25px;
+            }
+        }
+
+        /* ========================================= */
+
+        /* Top Bar Style: Sabse upar wali patti */
+        .top-bar {
+            background-color: var(--dark-bg);
+            color: #fff;
+            font-size: 12px;
+            padding: 15px 0;
+        }
+
+        /* Navbar Hover Effect: Link ke niche red line aane ke liye */
+        .navbar {
+            padding: 25px 0;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 26px;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-icons i {
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-icons i:hover {
+            color: var(--primary-red);
+        }
+
+        /* Urdu Hint: Menu links + underline */
+        .menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 34px;
+            flex: 1 1 auto;
+        }
+
+        .menu a {
+            position: relative;
+            text-decoration: none;
+            color: #666;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            padding: 8px 0;
+            display: inline-block;
+            transition: .2s ease;
+        }
+
+        .menu a:hover {
+            color: var(--text);
+        }
+
+        .menu a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 2px;
+            height: 2px;
+            width: 0;
+            background: var(--accent);
+            transition: width .25s ease;
+        }
+
+        .menu a:hover::after {
+            width: 100%;
+        }
+
+        .menu a.active {
+            color: var(--text);
+        }
+
+        .menu a.active::after {
+            width: 100%;
+        }
+
+        /* Urdu Hint: Right icons */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            flex: 0 0 auto;
+        }
+
+        .nav-actions a {
+            color: #666;
+            font-size: 18px;
+            text-decoration: none;
+            transition: .2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-actions a:hover {
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 992px) {
+            .nav-inner {
+                flex-wrap: wrap;
+            }
+
+            .menu {
+                order: 3;
+                width: 100%;
+                gap: 18px;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+        }
+
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            background-color: var(--light-gray);
+            padding: 140px 0;
+            min-height: 750px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-model-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-model-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: bottom right;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            line-height: 1;
+            margin-bottom: 30px;
+            font-weight: 800;
+        }
+
+        .btn-red {
+            background-color: var(--primary-red);
+            color: #fff;
+            padding: 16px 45px;
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 600;
+            border: none;
+            border-radius: 0;
+            display: inline-block;
+        }
+
+        /* Features Bar */
+        .features-bar {
+            background-color: var(--dark-bg);
+            color: #fff;
+            padding: 60px 0;
+        }
+
+        .feature-box i {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        /* Product Card Styles */
+        .product-img-box {
+            background-color: var(--product-bg);
+            position: relative;
+            padding: 40px;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .product-img-box img {
+            max-width: 100%;
+            max-height: 240px;
+            mix-blend-mode: multiply;
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: var(--primary-red);
+            color: #fff;
+            font-size: 11px;
+            padding: 4px 10px;
+            font-weight: 700;
+        }
+
+        .btn-add-cart {
+            width: 100%;
+            background-color: var(--primary-red);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            transition: 0.5s;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        .btn-add-cart:hover {
+            background-color: #d1362e;
+        }
+
+        /* Alice W Section */
+        .tech-section-wrapper {
+            position: relative;
+            padding: 120px 0;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        .tech-image-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background-color: #ccc;
+            z-index: 1;
+        }
+
+        .tech-image-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .tech-content-card {
+            background-color: #111115;
+            padding: 90px 70px;
+            position: relative;
+            z-index: 5;
+            color: #fff;
+            margin-left: -15px;
+        }
+
+        .tech-title {
+            font-family: 'Courier New', monospace;
+            font-size: 2.5rem;
+        }
+
+        .tech-signature {
+            font-family: 'Great Vibes', cursive;
+            font-size: 50px;
+            margin-top: 20px;
+        }
+
+        /* Newsletter */
+        .newsletter-section {
+            position: relative;
+            background-color: #1a1a1e;
+            padding: 100px 0;
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .newsletter-form {
+            max-width: 600px;
+            margin: 40px auto 0;
+            display: flex;
+            gap: 0;
+        }
+
+        .newsletter-form input {
+            border-radius: 0;
+            border: none;
+            padding: 18px 25px;
+            flex-grow: 1;
+        }
+
+        .newsletter-form .btn-red {
+            padding: 0 40px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 80px 45px 40px 45px;
+            border-top: 1px solid #eee;
+            background: #fff;
+        }
+
+        .footer p,
+        .mb-2 {
+            font-size: 20px;
+        }
+
+        .mb-2 a:hover {
+            color: var(--primary-red);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 50px;
+            border-top: 1px solid #eee;
+            margin-top: 60px;
+        }
+
+        /* Responsive Settings: Mobile design */
+        @media (max-width: 991px) {
+            .hero-model-container {
+                opacity: 0.2;
+                width: 100%;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .tech-image-bg {
+                position: relative;
+                width: 100%;
+                height: 400px;
+            }
+
+            .tech-section-wrapper {
+                padding: 0;
+                display: flex;
+                flex-direction: column-reverse;
+            }
+
+            .tech-content-card {
+                padding: 50px 30px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .container {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================
+         SEARCH OVERLAY HTML (Yeh code search bar kholta hai)
+         ========================================= -->
+    <div class="search-overlay" id="searchOverlay">
+        <span class="close-search" onclick="toggleSearch()">&times;</span>
+        <div class="search-inner">
+            <input type="text" placeholder="Search">
+            <button class="search-btn-circle" type="button">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    <!-- ========================================= -->
+
+    <!-- =========================================
+         LOGIN POPUP HTML (center modal) - Urdu Hint: user icon se open hoga
+         ========================================= -->
+    <div class="login-overlay" id="loginOverlay"></div>
+
+    <!-- Urdu Hint: X button screen ke top-right par (screenshot jaisa) -->
+    <div class="login-close" id="loginCloseBtn" onclick="toggleLogin()">&times;</div>
+
+    <div class="login-modal" id="loginModal" role="dialog" aria-modal="true">
+        <form id="loginForm">
+            <!-- Urdu Hint: Username/Email field -->
+            <div class="mb-4">
+                <label for="loginUser">Username or Email Address</label>
+                <input class="login-input" id="loginUser" type="text" required>
+            </div>
+
+            <!-- Urdu Hint: Password field + eye icon -->
+            <div class="mb-2">
+                <label for="loginPass">Password</label>
+                <div class="login-pass-wrap">
+                    <input class="login-input" id="loginPass" type="password" required>
+                    <i class="far fa-eye login-eye" id="toggleLoginEye" onclick="toggleLoginPassword()"></i>
+                </div>
+            </div>
+
+            <!-- Urdu Hint: Remember me + Forgot password row -->
+            <div class="login-row">
+                <label class="m-0" style="display:flex;align-items:center;gap:8px;">
+                    <input type="checkbox">
+                    <span>Remember Me</span>
+                </label>
+                <a href="#">Forgot Password?</a>
+            </div>
+
+            <!-- Urdu Hint: Red login button -->
+            <button class="login-btn" type="submit">Log In</button>
+        </form>
+    </div>
+    <!-- ========================================= -->
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>Don't miss our <a href="#" class="text-white text-decoration-underline ms-1">holiday offer</a> - up to
+                <strong>50% OFF!</strong></div>
+            <div class="d-flex align-items-center">
+                <a href="#" class="text-white ms-3"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white ms-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white ms-3"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-white ms-3"><i class="far fa-envelope"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-shopping-bag me-2"></i>Garderobe</a>
+            
+
+            <div class="menu">
+                <a class="active" href="">Home</a>
+                <a href="product.html">Products</a>
+                <a href="service.html">Services</a>
+                <a href="about.html">About&nbsp;&nbsp;Us</a>
+                <a href="news.html">News</a>
+                <a href="contact.html">Contact</a>
+            </div>
+
+            <div class="nav-icons">
+                <!-- Search icon par click karne se search bar khulega -->
+                <i class="fas fa-search ms-4" onclick="toggleSearch()"></i>
+
+                <!-- Urdu Hint: Is user icon par click se login popup open hoga (href same rakha hai) -->
+                <a href="con" onclick="toggleLogin(); return false;">
+                    <i class="far fa-user ms-4"></i>
+                </a>
+
+                <a href="cart.html"><i class="fas fa-shopping-cart ms-4"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-model-container">
+            <img src="./img/cloth img.webp" alt="Model" class="hero-model-img">
+        </div>
+        <div class="container position-relative" style="z-index: 5;">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">Brand New<br>Collection</h1>
+                    <p class="mb-4 text-muted fs-5" style="max-width: 480px;">Mauris vitae ultricies leo integer
+                        malesuada tempor orci dapibus ultrices diam in arcu cursus euismod purus viverra accumsan.</p>
+                    <div class="d-flex flex-wrap mb-5 fs-6 fw-bold">
+                        <div class="me-4 mb-2"><i class="fas fa-check-circle me-2 text-dark"></i>Top Brands</div>
+                        <div class="me-4 mb-2"><i class="fas fa-check-circle me-2 text-dark"></i>High Quality</div>
+                        <div class="mb-2"><i class="fas fa-check-circle me-2 text-dark"></i>Free Delivery</div>
+                    </div>
+                    <a href="shirt.html" class="btn btn-red">EXPLORE SHOP</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features-bar text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3"><i class="fas fa-credit-card"></i>
+                    <h5>Secure Payment</h5>
+                    <p class="small opacity-50">100% secure payment</p>
+                </div>
+                <div class="col-md-3"><i class="fas fa-undo"></i>
+                    <h5>30 Days Return</h5>
+                    <p class="small opacity-50">If goods have problems</p>
+                </div>
+                <div class="col-md-3"><i class="fas fa-headset"></i>
+                    <h5>24/7 Support</h5>
+                    <p class="small opacity-50">Dedicated support</p>
+                </div>
+                <div class="col-md-3"><i class="fas fa-truck"></i>
+                    <h5>Free Delivery</h5>
+                    <p class="small opacity-50">For all order over 80$</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Arrivals -->
+    <section class="py-5 mt-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-end mb-5">
+                <div>
+                    <span class="text-muted text-uppercase small ls-2">Check out latest products</span>
+                    <h2 class="display-5 mb-0">New Arrivals</h2>
+                </div>
+                <a href="#" class="btn btn-outline-dark rounded-0 px-4">VIEW ALL</a>
+            </div>
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="product-img-box"><span class="sale-badge">Sale</span><img
+                            src="./img/category-drones-2.webp" alt="Product"></div>
+                    <h6 class="fw-bold">Snapback Cap</h6>
+                    <p class="mb-2">$30.00 <del class="text-muted ms-2">$45.00</del></p>
+                    <div class="text-warning small mb-3"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <button class="btn-add-cart">Add to cart</button>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="product-img-box"><img src="./img/category-gaming.webp" alt="Product"></div>
+                    <h6 class="fw-bold">Gray Shoes</h6>
+                    <p class="mb-2">$50.00</p>
+                    <div class="text-warning small mb-3"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <button class="btn-add-cart">Add to cart</button>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="product-img-box"><span class="sale-badge">Sale</span><img
+                            src="./img/category-phones.webp" alt="Product"></div>
+                    <h6 class="fw-bold">Black T-shirt</h6>
+                    <p class="mb-2">$50.00 <del class="text-muted ms-2">$80.00</del></p>
+                    <div class="text-warning small mb-3"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <button class="btn-add-cart">Add to cart</button>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="product-img-box"><span class="sale-badge">Sale</span><img
+                            src="./img/category-laptops.webp" alt="Product"></div>
+                    <h6 class="fw-bold">Retro Sunglasses</h6>
+                    <p class="mb-2">$55.00</p>
+                    <div class="text-warning small mb-3"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <button class="btn-add-cart">Add to cart</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alice W Section -->
+    <section class="tech-section-wrapper my-5">
+        <div class="tech-image-bg">
+            <img src="./img/article-image-4.webp" alt="Alice Background">
+        </div>
+        <div class="container">
+            <div class="row align-items-center" style="min-height: 650px;">
+                <div class="col-lg-5 col-md-7">
+                    <div class="tech-content-card">
+                        <h2 class="tech-title">New Cloth<br>Technologies</h2>
+                        <div class="tech-text mt-4 fs-6 opacity-75" style="line-height: 2;">
+                            Mauris vitae ultricies leo integer malesuada.<br><br>
+                            Odio tempor orci dapibus ultrices in.
+                        </div>
+                        <div class="tech-signature">Alice W</div>
+                        <div class="small text-uppercase fw-bold mt-2 ls-1">Alice Autumn, CEO</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section">
+        <div class="container">
+            <h2 class="display-6">Newsletter Updates</h2>
+            <p class="opacity-75 fs-5">Subscribe to receive emails on new product arrivals & special offers</p>
+            <form class="newsletter-form">
+                <input type="email" class="form-control" placeholder="Email address" required>
+                <button type="submit" class="btn btn-red">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 mb-4 pe-md-5">
+                    <h5 class="mb-4">About Us</h5>
+                    <p class="text-muted">Mauris vitae ultricies leo integer malesuada. Odio tempor orci dapibus
+                        ultrices in.</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5 class="mb-4">Account</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li class="mb-2"><a href="#">My Account</a></li>
+                        <li class="mb-2"><a href="#">My Wishlist</a></li>
+                        <li class="mb-2"><a href="#">My Cart</a></li>
+                        <li class="mb-2"><a href="#">Check out</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5 class="mb-4">Shipping</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li class="mb-2"><a href="#">New Products</a></li>
+                        <li class="mb-2"><a href="#">Best Sellers</a></li>
+                        <li class="mb-2"><a href="#">Manufacturers</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-4">Contact Us</h5>
+                    <p class="text-muted">Phone: (+63) 555 1212<br>New York, 96th Street, NY 10129</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <h3 class="navbar-brand mb-2">Garderobe</h3>
+                <p class="text-muted small">Copyright © 2024 - Garderobe WordPress Theme</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS: Search + Login toggle -->
+    <script>
+        /* Urdu Hint: Search overlay ko open/close karne ke liye */
+        function toggleSearch() {
+            var overlay = document.getElementById("searchOverlay");
+            if (overlay.style.display === "flex") {
+                overlay.style.display = "none";
+            } else {
+                overlay.style.display = "flex";
+                overlay.querySelector('input').focus();
+            }
+        }
+
+        /* Urdu Hint: Login modal ko open/close karne ke liye */
+        function toggleLogin() {
+            var o = document.getElementById('loginOverlay');
+            var m = document.getElementById('loginModal');
+            var x = document.getElementById('loginCloseBtn');
+
+            var isOpen = (o.style.display === 'block');
+            if (isOpen) {
+                o.style.display = 'none';
+                m.style.display = 'none';
+                x.style.display = 'none';
+            } else {
+                o.style.display = 'block';
+                m.style.display = 'block';
+                x.style.display = 'block';
+                // Urdu Hint: open hotay hi username input focus
+                document.getElementById('loginUser').focus();
+            }
+        }
+
+        /* Urdu Hint: Password show/hide (eye icon) */
+        function toggleLoginPassword() {
+            var pass = document.getElementById('loginPass');
+            var icon = document.getElementById('toggleLoginEye');
+            if (pass.type === 'password') {
+                pass.type = 'text';
+                icon.classList.add('fa-eye-slash');
+            } else {
+                pass.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+            }
+        }
+
+        /* Urdu Hint: Overlay ke background par click se login close */
+        document.getElementById('loginOverlay').addEventListener('click', toggleLogin);
+
+        /* Urdu Hint: ESC press se search/login dono close */
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "Escape") {
+                // close search
+                document.getElementById("searchOverlay").style.display = "none";
+
+                // close login
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('loginCloseBtn').style.display = 'none';
+            }
+        });
+
+        /* Optional: form submit demo prevent */
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            // yahan aap apna backend/login logic laga sakte hain
+        });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

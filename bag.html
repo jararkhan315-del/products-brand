@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quartz Watch - Garderobe</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --dark:#111116;
+      --text:#111116;
+      --muted:#777;
+      --line:#ececec;
+      --accent:#df453e;
+      --soft:#f4f4f6;
+
+      --gutter:58px;
+      --max:1400px;
+
+      /* Sticky top offset for left image (navbar ke neeche) */
+      --stickyTop: 110px;
+    }
+    @media (max-width: 768px){ :root{ --gutter:14px; } }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:"Jost",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:#fff;
+      overflow-x:hidden;
+    }
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 var(--gutter);
+      width:100%;
+    }
+
+    /* ================= TOPBAR ================= */
+    .topbar{
+      background:var(--dark);
+      color:#f4f4f6;
+      height:44px;
+      display:flex;
+      align-items:center;
+    }
+    .topbar .wrap{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .topbar-text{ font-size:14px; line-height:1; white-space:nowrap; }
+    .topbar-text a{ color:#f4f4f6; text-decoration:underline; }
+    .topbar-text strong{ font-weight:800; }
+    .top-icons{ display:flex; align-items:center; gap:18px; }
+    .top-icons a{ color:#f4f4f6; font-size:14px; text-decoration:none; transition:.2s ease; }
+    .top-icons a:hover{ opacity:.85; transform:translateY(-1px); }
+
+    /* ================= NAVBAR ================= */
+    .main-nav{
+      background:#fff;
+      border-bottom:1px solid var(--line);
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+    .nav-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:22px var(--gutter);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      text-decoration:none; color:var(--text); flex:0 0 auto;
+    }
+    .brand-bag{
+      width:34px;height:34px;background:var(--dark);color:#fff;border-radius:3px;
+      display:flex;align-items:center;justify-content:center;font-weight:800;position:relative;font-size:18px;line-height:1;
+    }
+    .brand-bag::before{
+      content:""; position:absolute; top:-6px; left:7px; right:7px; height:7px;
+      border:2px solid var(--dark); border-bottom:none; border-radius:7px 7px 0 0;
+    }
+    .brand-text{ font-weight:800; font-size:26px; letter-spacing:.2px; }
+
+    .menu{ display:flex; align-items:center; justify-content:center; gap:34px; flex:1 1 auto; }
+    .menu a{
+      position:relative; text-decoration:none; color:#666; font-size:13px; font-weight:700;
+      text-transform:uppercase; letter-spacing:.5px; padding:8px 0; display:inline-block; transition:.2s ease;
+    }
+    .menu a:hover{ color:var(--text); }
+    .menu a::after{
+      content:""; position:absolute; left:0; bottom:2px; height:2px; width:0;
+      background:var(--accent); transition:width .25s ease;
+    }
+    .menu a:hover::after{ width:100%; }
+    .menu a.active{ color:var(--text); }
+    .menu a.active::after{ width:100%; }
+
+    .nav-actions{ display:flex; align-items:center; gap:22px; flex:0 0 auto; }
+    .nav-actions a{
+      color:#666; font-size:18px; text-decoration:none; transition:.2s ease;
+      display:inline-flex; align-items:center; justify-content:center;
+    }
+    .nav-actions a:hover{ color:var(--accent); transform:translateY(-1px); }
+
+    @media (max-width: 992px){
+      .nav-inner{ flex-wrap:wrap; }
+      .menu{ order:3; width:100%; gap:18px; flex-wrap:wrap; justify-content:flex-start; }
+    }
+
+    /* ================= PRODUCT PAGE ================= */
+    .product-page{ padding:55px 0 70px; }
+
+    .crumbs{ font-size:13px; color:#777; margin-bottom:18px; }
+    .crumbs a{ color:#777; text-decoration:none; }
+    .crumbs a:hover{ text-decoration:underline; }
+    .crumbs .sep{ margin:0 8px; color:#aaa; }
+
+    .p-main-title{
+      font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-weight:700;
+      font-size:34px;
+      margin:0 0 10px;
+      letter-spacing:-.6px;
+    }
+    .rating-row{
+      display:flex; align-items:center; gap:10px;
+      margin-bottom:10px; color:#777; font-size:12px;
+    }
+    .rating-stars{ color:#f39c12; font-size:12px; line-height:1; }
+    .rating-row a{ color:#777; text-decoration:none; }
+    .rating-row a:hover{ color:var(--accent); }
+
+    .price-row{
+      font-size:22px;
+      font-weight:800;
+      margin:0 0 18px;
+      color:#333;
+    }
+    .price-row del{ font-size:14px; color:#aaa; margin-left:8px; font-weight:500; }
+
+    /* bigger text like you asked */
+    .p-desc{
+      color:#777;
+      font-size:15.5px;
+      line-height:2;
+      margin-bottom:14px;
+    }
+
+    /* ================= LEFT IMAGE (STICKY) ================= */
+    .left-sticky{
+      position: sticky;
+      top: var(--stickyTop);
+      align-self:flex-start;
+    }
+    @media (max-width: 991px){ .left-sticky{ position: static; } }
+.media-box{
+    position: relative;
+}
+    
+    .badge-sale{
+      position:absolute; top:18px; left:18px;
+      background:var(--accent); color:#fff; font-size:10px; font-weight:800;
+      padding:5px 10px; border-radius:2px; text-transform:uppercase;
+    }
+    
+    .media-box img{
+      max-width:85%;
+      max-height:85%;
+      object-fit:contain;
+      transition: transform .28s ease;
+      transform: scale(1);
+      mix-blend-mode:multiply;
+    }
+    .media-box:hover img{ transform: scale(1.06); }
+
+    /* ================= BUY ROW ================= */
+    .buy-row{
+      display:flex; gap:12px; align-items:stretch;
+      margin:20px 0 18px; padding-top:18px;
+      border-top:1px solid #eee;
+    }
+    .qty-box{
+      display:flex; align-items:center;
+      border:1px solid #ddd; height:52px; width:120px; background:#fff;
+    }
+    .qty-btn{ width:40px; border:none; background:transparent; font-weight:700; color:#444; cursor:pointer; }
+    .qty-input{ width:40px; border:none; text-align:center; outline:none; font-weight:600; color:#333; }
+    .addcart-btn{
+      flex:1; height:52px; border:none;
+      background:var(--accent); color:#fff;
+      font-weight:800; text-transform:uppercase; letter-spacing:.4px;
+    }
+    .addcart-btn:hover{ background:#c43131; }
+
+    .meta-row{
+      font-size:12px; color:#777;
+      padding-top:18px; border-top:1px solid #eee;
+      margin-top:10px;
+    }
+    .meta-row b{
+      color:#555;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+      font-size:11px;
+    }
+
+    /* ================= TABS (CENTER + 80px DOWN) ================= */
+    .tabs-wrap{ margin-top: 80px; }
+    .tabs-bar{
+      border-top:1px solid #eee;
+      border-bottom:1px solid #eee;
+      display:flex;
+      justify-content:center;
+      gap:26px;
+      padding:16px 0;
+    }
+    .tab-link{
+      font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:12px; font-weight:800;
+      letter-spacing:.7px; text-transform:uppercase;
+      color:#777; text-decoration:none;
+      position:relative;
+      padding:6px 0;
+    }
+    .tab-link.active{ color:var(--accent); }
+    .tab-link.active::after{
+      content:""; position:absolute; left:0; right:0;
+      bottom:-17px; height:2px; background:var(--accent);
+    }
+    .tab-panel{ padding:26px 0 0; display:none; text-align:left; }
+    .tab-panel.active{ display:block; }
+
+    .review-title{
+      font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:18px; font-weight:800; margin:10px 0 18px;
+    }
+    .review-item{
+      display:flex; gap:14px; align-items:flex-start;
+      padding:18px 0; border-top:1px solid #eee;
+    }
+    .avatar{
+      width:44px;height:44px;border-radius:50%;
+      background:#2f6cff;color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:800;flex:0 0 auto;
+    }
+    .review-meta{ display:flex; justify-content:space-between; gap:12px; align-items:center; }
+    .review-meta small{ color:#888; text-transform:uppercase; letter-spacing:.3px; font-size:11px; }
+    .review-text{ color:#777; font-size:14.5px; line-height:1.9; margin-top:8px; }
+
+    /* ================= RELATED PRODUCTS (FOOTER SE PEHLE IMAGES) ================= */
+    .related-wrap{
+      padding-top:40px;
+      border-top:1px solid #eee;
+      margin-top:34px;
+    }
+    .related-title{
+      font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:18px;
+      font-weight:800;
+      margin:0 0 18px;
+    }
+    .rel-card .media-box-sm{
+      background:var(--soft);
+      border:1px solid #f0f0f0;
+      height:220px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      position:relative;
+    }
+    .media-box-sm img{
+      max-width:350px;
+      max-height:350px;
+      object-fit:contain;
+      transition: transform .28s ease;
+      transform: scale(1);
+      mix-blend-mode:multiply;
+    }
+    .media-box-sm:hover img{ transform: scale(1.06); }
+    .sale-mini{
+      position:absolute; top:14px; left:14px;
+      background:var(--accent); color:#fff; font-size:10px; font-weight:800;
+      padding:4px 9px; border-radius:2px; text-transform:uppercase;
+    }
+
+    /* ================= RIGHT SIDEBAR (TOP RATED + PROMO) ================= */
+    .product-sidebar{ padding-left:0; }
+    @media (min-width: 992px){ .product-sidebar{ padding-left:18px; } }
+
+    .side-title{
+      font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:18px;
+      font-weight:800;
+      margin:0 0 14px;
+    }
+    .side-rated{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px 0;
+      border-bottom:1px solid #f0f0f0;
+    }
+    .side-thumb{
+      width:46px;
+      height:46px;
+      background:var(--soft);
+      border:1px solid #f0f0f0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      flex:0 0 auto;
+      text-decoration:none;
+    }
+    .side-thumb img{ width:100%; height:100%; object-fit:contain; }
+    .side-info{ min-width:0; }
+
+    .side-name{
+      display:inline-block;
+      font-size:13px;
+      font-weight:700;
+      color:var(--text);
+      text-decoration:none;
+      line-height:1.2;
+    }
+    .side-name:hover{ color:var(--accent); }
+
+    .side-stars{ color:#f39c12; font-size:11px; line-height:1; margin:6px 0 5px; }
+    .side-price{ font-size:12px; color:#777; line-height:1.2; }
+    .side-price del{ color:#aaa; margin-left:6px; }
+
+    .promo-card{
+      margin-top:22px;
+      background:#0f0f14;
+      color:#fff;
+      padding:38px 30px;
+      position:relative;
+      overflow:hidden;
+      min-height:430px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .promo-card::before,
+    .promo-card::after{
+      content:"";
+      position:absolute;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:50%;
+      pointer-events:none;
+    }
+    .promo-card::before{ width:520px;height:520px; right:-240px; bottom:-260px; }
+    .promo-card::after{ width:230px;height:230px; right:-90px; top:-120px; }
+    .promo-title{
+      font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:22px;
+      font-weight:800;
+      margin:0 0 14px;
+      line-height:1.35;
+    }
+    .promo-text{
+      color:rgba(255,255,255,0.75);
+      font-size:13px;
+      line-height:1.9;
+      margin:0;
+      max-width:260px;
+    }
+    .promo-sign{
+      font-family:"Great Vibes", cursive;
+      font-size:44px;
+      line-height:1;
+      margin-top:22px;
+    }
+    .promo-role{
+      font-size:11px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      opacity:.85;
+      font-weight:800;
+      margin-top:6px;
+    }
+
+    /* ================= FOOTER (NO NAVBAR) ================= */
+    .site-footer{
+      background:#fff;
+      border-top:1px solid #f0f0f0;
+      padding:70px 0 0;
+      margin-top:70px;
+    }
+    .footer-title{ font-weight:800; font-size:16px; margin-bottom:18px; }
+    .footer-text{ color:#777; font-size:14px; line-height:1.8; }
+    .footer-links{ list-style:none; padding:0; margin:0; }
+    .footer-links li{ margin-bottom:10px; }
+    .footer-links a{ color:#777; font-size:14px; text-decoration:none; }
+    .footer-links a:hover{ color:var(--accent); }
+
+    .footer-midlogo{
+      padding:55px 0 25px;
+      text-align:center;
+      border-top:1px solid #eee;
+      margin-top:55px;
+    }
+    .footer-logo{
+      display:inline-flex; align-items:center; gap:10px;
+      text-decoration:none; color:var(--text);
+    }
+    .footer-bag{
+      width:34px;height:34px;background:var(--dark);color:#fff;border-radius:3px;
+      display:flex;align-items:center;justify-content:center;font-weight:800;position:relative;font-size:18px;line-height:1;
+    }
+    .footer-bag::before{
+      content:""; position:absolute; top:-6px; left:7px; right:7px; height:7px;
+      border:2px solid var(--dark); border-bottom:none; border-radius:7px 7px 0 0;
+    }
+    .footer-brand-text{ font-weight:800; font-size:26px; letter-spacing:.2px; }
+
+    .footer-bottom{
+      padding:30px 0 60px;
+      text-align:center;
+      color:#999;
+      font-size:13px;
+      border-top:1px solid #eee;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="topbar-text">
+        Don't miss our <a href="#">holiday offer</a> - up to <strong>50% OFF!</strong>
+      </div>
+      <div class="top-icons">
+        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-regular fa-envelope"></i></a>
+        <a href="#"><i class="fa-solid fa-phone"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="main-nav">
+    <div class="nav-inner">
+      <a class="brand" href="#">
+        <span class="brand-bag">G</span>
+        <span class="brand-text">arderobe</span>
+      </a>
+
+      <div class="menu">
+        <a href="index.html">Home</a>
+        <a class="active" href="product.html">Products</a>
+        <a href="service.html">Services</a>
+        <a href="about.html">About&nbsp;Us</a>
+        <a href="news.html">News</a>
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a href="#"><i class="fa-regular fa-user"></i></a>
+        <a href="#"><i class="fa-solid fa-bag-shopping"></i></a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="product-page">
+    <div class="wrap">
+      <div class="crumbs">
+        <a href="index.html">Home</a> <span class="sep">/</span>
+        <a href="#">Accessories</a> <span class="sep">/</span>
+        <span style="color:#111; font-weight:600;">Quartz Watch</span>
+      </div>
+
+      <div class="row g-4">
+        <!-- LEFT MAIN -->
+        <div class="col-lg-9">
+          <div class="row g-4">
+            <div class="col-md-5">
+              <div class="left-sticky">
+                <div class="media-box">
+                  <span class="badge-sale">Sale</span>
+                 
+                  <img src="./img/bag.webp" alt="">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-7">
+              <h1 class="p-main-title">Elegant Bag</h1>
+
+              <div class="rating-row">
+                <div class="rating-stars">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                </div>
+                <a href="#reviews" id="reviewCountLink">(1 customer review)</a>
+              </div>
+
+              <div class="price-row">$50.00 <del>$80.00</del></div>
+
+              <p class="p-desc">Vulputate dignissim suspendisse in est ante in nibh. Eget mauris pharetra et ultrices neque ornare aenean euismod.</p>
+              <p class="p-desc">Tristique risus nec feugiat in fermentum. Lacus sed viverra tellus in hac habitasse platea.</p>
+              <p class="p-desc">Cursus vitae congue mauris rhoncus.</p>
+
+              <div class="buy-row">
+                <div class="qty-box">
+                  <button class="qty-btn" type="button" id="qtyMinus">−</button>
+                  <input class="qty-input" id="qtyInput" type="text" value="1" inputmode="numeric">
+                  <button class="qty-btn" type="button" id="qtyPlus">+</button>
+                </div>
+                <button class="addcart-btn" type="button">Add to cart</button>
+              </div>
+
+              <div class="meta-row">
+                <b>CATEGORY:</b> <span>Accessories</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabs -->
+          <div class="tabs-wrap" id="description">
+            <div class="tabs-bar">
+              <a class="tab-link active" href="#description" id="tabDesc">Description</a>
+              <a class="tab-link" href="#reviews" id="tabRev">Reviews (1)</a>
+            </div>
+
+            <section class="tab-panel active" id="panelDesc">
+              <p class="p-desc">
+                Vestibulum lectus mauris ultrices eros in cursus. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim.
+                Ipsum a arcu cursus vitae congue.
+              </p>
+              <p class="p-desc">
+                Euismod elementum nisi quis eleifend quam adipiscing vitae. Magna ac placerat vestibulum lectus. Eu facilisis sed odio morbi.
+              </p>
+              <p class="p-desc">
+                Senectus et netus et malesuada fames ac turpis egestas. Velit dignissim sodales ut eu sem integer vitae justo.
+              </p>
+            </section>
+
+            <section class="tab-panel" id="panelRev">
+              <div class="review-title" id="reviews">1 review for Quartz Watch</div>
+
+              <div class="review-item">
+                <div class="avatar">B</div>
+                <div style="flex:1;">
+                  <div class="review-meta">
+                    <div>
+                      <b style="font-size:13px;">Michael</b>
+                      <small>— December 23, 2021</small>
+                    </div>
+                    <div class="rating-stars">
+                      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                    </div>
+                  </div>
+                  <div class="review-text">
+                    Convallis tellus id interdum velit laoreet id donec ultrices tincidunt.
+                  </div>
+                </div>
+              </div>
+
+              <!-- external form mount -->
+              <div id="reviewFormMount"></div>
+            </section>
+          </div>
+
+          <!-- Related products (footer se pehle images) -->
+          <div class="related-wrap">
+            <div class="related-title">Related products</div>
+
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="rel-card">
+                  <div class="media-box-sm mb-3">
+                    <img src="./img/cap.webp" alt="">
+                  </div>
+                  <div class="p-main-title" style="font-size:16px;margin:0 0 6px;">Brown Cap</div>
+                  <div class="p-desc" style="margin:0 0 4px; font-size:14px; line-height:1.6;"><b style="color:#333;">$25.00</b></div>
+                  <div style="font-size:10px; letter-spacing:.6px; text-transform:uppercase; color:#999;">Accessories</div>
+                  <button class="addcart-btn mt-3" type="button" style="height:auto;padding:12px 18px;">Add to cart</button>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="rel-card">
+                  <div class="media-box-sm mb-3">
+                    <span class="sale-mini">Sale</span>
+                    <img src="./img/clock.webp" alt="">
+                  </div>
+                  <div class="p-main-title" style="font-size:16px;margin:0 0 6px;">Snapback Cap</div>
+                  <div class="p-desc" style="margin:0 0 4px; font-size:14px; line-height:1.6;">
+                    <b style="color:#333;">$30.00</b> <del style="color:#aaa; font-size:12px; margin-left:6px;">$45.00</del>
+                  </div>
+                  <div class="stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+                  </div>
+                  <div style="font-size:10px; letter-spacing:.6px; text-transform:uppercase; color:#999;">Accessories</div>
+                  <button class="addcart-btn mt-3" type="button" style="height:auto;padding:12px 18px;">Add to cart</button>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="rel-card">
+                  <div class="media-box-sm mb-3">
+                    <span class="sale-mini">Sale</span>
+                    <img src="./img/glasses.webp" alt="">
+                  </div>
+                  <div class="p-main-title" style="font-size:16px;margin:0 0 6px;">Retro Sunglasses</div>
+                  <div class="p-desc" style="margin:0 0 4px; font-size:14px; line-height:1.6;">
+                    <b style="color:#333;">$55.00</b> <del style="color:#aaa; font-size:12px; margin-left:6px;">$60.00</del>
+                  </div>
+                  <div style="font-size:10px; letter-spacing:.6px; text-transform:uppercase; color:#999;">Accessories</div>
+                  <button class="addcart-btn mt-3" type="button" style="height:auto;padding:12px 18px;">Add to cart</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT SIDEBAR -->
+        <div class="col-lg-3">
+          <aside class="product-sidebar">
+            <h3 class="side-title">Top rated products</h3>
+
+            <div class="side-rated">
+              <a class="side-thumb" href="#"><img src="./img/clock.webp" alt=""></a>
+              <div class="side-info">
+                <a class="side-name" href="#">Quartz Watch</a>
+                <div class="side-stars">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                </div>
+                <div class="side-price">$50.00 <del>$80.00</del></div>
+              </div>
+            </div>
+
+            <div class="side-rated">
+              <a class="side-thumb" href="#"><img src="./img/t-shirt.webp" alt=""></a>
+              <div class="side-info">
+                <a class="side-name" href="#">Black T-shirt</a>
+                <div class="side-stars">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <div class="side-price">$50.00 <del>$80.00</del></div>
+              </div>
+            </div>
+
+            <div class="side-rated">
+              <a class="side-thumb" href="#"><img src="./img/shose.webp" alt=""></a>
+              <div class="side-info">
+                <a class="side-name" href="#">Color Sneakers</a>
+                <div class="side-stars">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+                </div>
+                <div class="side-price">$50.00 <del>$80.00</del></div>
+              </div>
+            </div>
+
+            <div class="side-rated">
+              <a class="side-thumb" href="#"><img src="./img/cap.webp" alt=""></a>
+              <div class="side-info">
+                <a class="side-name" href="#">Snapback Cap</a>
+                <div class="side-stars">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+                </div>
+                <div class="side-price">$30.00 <del>$45.00</del></div>
+              </div>
+            </div>
+
+            <div class="side-rated" style="border-bottom:none;">
+              <a class="side-thumb" href="#"><img src="./img/shose.webp" alt=""></a>
+              <div class="side-info">
+                <a class="side-name" href="#">Gray Shoes</a>
+                <div class="side-stars">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                </div>
+                <div class="side-price">$50.00</div>
+              </div>
+            </div>
+
+            <div class="promo-card">
+              <div>
+                <div class="promo-title">New Cloth<br>Technologies</div>
+                <p class="promo-text">
+                  Mauris vitae ultricies leo integer malesuada.
+                  Odio tempor orci dapibus ultrices in.<br><br>
+                  Egestas diam in arcu cursus euismod dictum purus viverra accumsan in nisl.
+                </p>
+              </div>
+              <div>
+                <div class="promo-sign">Alice W</div>
+                <div class="promo-role">Alice Autumn, CEO</div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER (navbar removed) -->
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="footer-title">About Us</div>
+          <div class="footer-text">
+            Mauris vitae ultricies leo integer malesuada.<br>
+            Odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus euismod.<br><br>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="footer-title">Account</div>
+          <ul class="footer-links">
+            <li><a href="#">My Account</a></li>
+            <li><a href="#">My Wishlist</a></li>
+            <li><a href="#">My Cart</a></li>
+            <li><a href="#">Sign in</a></li>
+            <li><a href="#">Check out</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-3">
+          <div class="footer-title">Shipping</div>
+          <ul class="footer-links">
+            <li><a href="#">New Products</a></li>
+            <li><a href="#">Best Sellers</a></li>
+            <li><a href="#">Manufacturers</a></li>
+            <li><a href="#">Suppliers</a></li>
+            <li><a href="#">Specials</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-3">
+          <div class="footer-title">Contact Us</div>
+          <div class="footer-text">
+            Phone: (+63) 555 1212<br>
+            Fax: (+63) 555 0100<br><br>
+            New York,<br>96th Street, NY 10129
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-midlogo">
+        <a href="#" class="footer-logo">
+          <span class="footer-bag">G</span>
+          <span class="footer-brand-text">arderobe</span>
+        </a>
+      </div>
+
+      <div class="footer-bottom">
+        Copyright © 2026 - WordPress Theme by CreativeThemes
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Quantity
+    const qtyInput = document.getElementById('qtyInput');
+    document.getElementById('qtyMinus').addEventListener('click', () => {
+      let v = parseInt(qtyInput.value || '1', 10);
+      qtyInput.value = Math.max(1, (isNaN(v) ? 1 : v) - 1);
+    });
+    document.getElementById('qtyPlus').addEventListener('click', () => {
+      let v = parseInt(qtyInput.value || '1', 10);
+      qtyInput.value = (isNaN(v) ? 1 : v) + 1;
+    });
+
+    // Tabs
+    const tabDesc = document.getElementById('tabDesc');
+    const tabRev  = document.getElementById('tabRev');
+    const panelDesc = document.getElementById('panelDesc');
+    const panelRev  = document.getElementById('panelRev');
+
+    function openTab(which){
+      const isDesc = which === 'desc';
+      tabDesc.classList.toggle('active', isDesc);
+      tabRev.classList.toggle('active', !isDesc);
+      panelDesc.classList.toggle('active', isDesc);
+      panelRev.classList.toggle('active', !isDesc);
+      if (!isDesc) loadReviewFormOnce();
+    }
+
+    tabDesc.addEventListener('click', (e)=>{ e.preventDefault(); openTab('desc'); history.replaceState(null,"","#description"); });
+    tabRev.addEventListener('click', (e)=>{ e.preventDefault(); openTab('rev'); history.replaceState(null,"","#reviews"); });
+
+    document.getElementById('reviewCountLink').addEventListener('click', (e)=>{
+      e.preventDefault();
+      openTab('rev');
+      tabRev.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+
+    if (location.hash === '#reviews') openTab('rev');
+
+    // External review form
+    let reviewFormLoaded = false;
+    async function loadReviewFormOnce(){
+      if (reviewFormLoaded) return;
+      reviewFormLoaded = true;
+
+      const mount = document.getElementById('reviewFormMount');
+      try{
+        const res = await fetch('review-form.html', { cache:'no-store' });
+        mount.innerHTML = await res.text();
+      }catch(err){
+        mount.innerHTML = '<div class="p-desc">review-form.html load nahi ho saki. (same folder me rakhen, aur page localhost par run karen)</div>';
+      }
+    }
+
+    // Rating stars (delegation)
+    document.addEventListener('click', (e)=>{
+      const star = e.target.closest('#rateStars i[data-rate]');
+      if(!star) return;
+
+      const n = parseInt(star.getAttribute('data-rate'), 10);
+      const hidden = document.getElementById('ratingValue');
+      if(hidden) hidden.value = n;
+
+      const icons = document.querySelectorAll('#rateStars i[data-rate]');
+      icons.forEach((ic, idx)=>{
+        const on = (idx + 1) <= n;
+        ic.classList.toggle('fa-solid', on);
+        ic.classList.toggle('fa-regular', !on);
+      });
+    });
+  </script>
+</body>
+</html>
